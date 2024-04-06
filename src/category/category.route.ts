@@ -1,6 +1,8 @@
 import express from "express";
 
+import { Roles } from "../common/constants";
 import authMiddleware from "../common/middlewares/auth.middleware";
+import { canAccess } from "../common/middlewares/canAccess.middleware";
 import { validateRequest } from "../common/middlewares/validateRequest.middleware";
 import asyncWrapper from "../common/utils/asyncWrapper";
 import { logger } from "../config/logger";
@@ -19,6 +21,7 @@ const categoryController = new CategoryController(categoryService, logger);
 categoryRouter.post(
   "/",
   authMiddleware,
+  canAccess([Roles.ADMIN]),
   validateRequest(createCategorySchema),
   asyncWrapper(categoryController.create),
 );
