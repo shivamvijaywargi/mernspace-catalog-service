@@ -22,7 +22,9 @@ export class CategoryController {
       priceConfiguration,
     });
 
-    this.logger.info(category);
+    this.logger.info(`Created category: `, {
+      id: category._id,
+    });
 
     res.json({
       success: true,
