@@ -4,6 +4,7 @@ import cors from "cors";
 import express from "express";
 import morgan from "morgan";
 
+import categoryRouter from "./category/category.route";
 import { errorHandler } from "./common/middlewares/errorHandler.middleware";
 
 const app = express();
@@ -23,6 +24,8 @@ app.get("/health-check", (req, res) => {
     message: "Catalog service is up",
   });
 });
+
+app.use("/api/v1/categories", categoryRouter);
 
 // CatchAll - 404
 app.all("*", (req, res) => {

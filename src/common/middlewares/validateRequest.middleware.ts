@@ -18,7 +18,7 @@ export const validateRequest =
           success: false,
           errors: result.error.issues.map((e) => ({
             location: e.path[0],
-            path: e.path[1],
+            path: e.path.splice(1).join("."),
             message: e.message,
           })),
         });
