@@ -13,10 +13,11 @@ module.exports = {
   },
   root: true,
   rules: {
-    "no-console": "warn",
-    "@typescript-eslint/no-unused-vars": "warn",
-    "no-empty-function": "warn",
+    "@typescript-eslint/no-floating-promises": "error",
     "@typescript-eslint/no-unnecessary-condition": "error",
-    "@typescript-eslint/no-floating-promises": "error"
+    "@typescript-eslint/no-misused-promises": "off",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "no-console": "warn",
+    "no-empty-function": "warn",
   },
 };
