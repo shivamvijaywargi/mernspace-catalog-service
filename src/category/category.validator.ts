@@ -61,8 +61,25 @@ const categoryBodySchema = z.object({
     ),
 });
 
+const categoryQuerySchema = z.object({
+  search: z.string().optional(),
+  fromDate: z.number({ coerce: true }).optional(),
+  toDate: z.number({ coerce: true }).optional(),
+  sortBy: z
+    .enum(["createdAt", "updatedAt"]) // Add fields to sort by
+    .optional(),
+  order: z.enum(["asc", "desc"]).optional(),
+  page: z.number({ coerce: true }).min(1).optional(),
+  limit: z.number({ coerce: true }).min(1).optional(),
+});
+
 export type CreateCategoryRequest = z.infer<typeof categoryBodySchema>;
+export type GetCategoryRequest = z.infer<typeof categoryQuerySchema>;
 
 export const createCategorySchema = z.object({
   body: categoryBodySchema,
+});
+
+export const getCategorySchema = z.object({
+  query: categoryQuerySchema,
 });

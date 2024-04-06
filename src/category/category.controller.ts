@@ -10,9 +10,19 @@ export class CategoryController {
     private logger: Logger,
   ) {
     this.create = this.create.bind(this);
+    this.getAll = this.getAll.bind(this);
   }
 
-  public async create(req: Request, res: Response) {
+  async getAll(req: Request, res: Response) {
+    const categories = await this.categoryService.getAll(req.query);
+
+    res.json({
+      success: true,
+      data: categories,
+    });
+  }
+
+  async create(req: Request, res: Response) {
     const { name, attributes, priceConfiguration } =
       req.body as CreateCategoryRequest;
 

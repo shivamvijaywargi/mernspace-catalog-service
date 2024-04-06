@@ -8,7 +8,7 @@ import asyncWrapper from "../common/utils/asyncWrapper";
 import { logger } from "../config/logger";
 import { CategoryController } from "./category.controller";
 import { CategoryService } from "./category.service";
-import { createCategorySchema } from "./category.validator";
+import { createCategorySchema, getCategorySchema } from "./category.validator";
 
 const categoryRouter = express.Router();
 
@@ -18,6 +18,12 @@ const categoryController = new CategoryController(categoryService, logger);
 /**
  * @Prefix /api/v1/categories
  */
+categoryRouter.get(
+  "/",
+  validateRequest(getCategorySchema),
+  asyncWrapper(categoryController.getAll),
+);
+
 categoryRouter.post(
   "/",
   authMiddleware,
