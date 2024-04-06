@@ -1,10 +1,11 @@
 import app from "./app";
 import { CONFIG } from "./config";
+import { connectDB } from "./config/dbConn";
 import { logger } from "./config/logger";
 
 const PORT = CONFIG.PORT;
 
-const startServer = (PORT: number) => {
+const startServer = async (PORT: number) => {
   try {
     // Handling uncaught exceptions
     process.on("uncaughtException", (err) => {
@@ -13,6 +14,8 @@ const startServer = (PORT: number) => {
 
       process.exit(1);
     });
+
+    await connectDB();
 
     const server = app.listen(PORT, () => {
       logger.info(`App is running at http://localhost:${PORT}`);
