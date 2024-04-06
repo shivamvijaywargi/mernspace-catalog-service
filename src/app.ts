@@ -1,11 +1,10 @@
+import "dotenv/config";
+
 import cors from "cors";
-import { config } from "dotenv";
 import express from "express";
 import morgan from "morgan";
 
 import { errorHandler } from "./common/middlewares/errorHandler.middleware";
-
-config();
 
 const app = express();
 
@@ -21,7 +20,7 @@ app.get("/health-check", (req, res) => {
   res.status(200).json({
     success: true,
     status: "OK",
-    message: "Server is up",
+    message: "Catalog service is up",
   });
 });
 
