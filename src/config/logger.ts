@@ -19,7 +19,7 @@ export const logger = winston.createLogger({
     winston.format.prettyPrint(),
     winston.format.json(),
   ),
-  defaultMeta: { service: "auth-service" },
+  defaultMeta: { service: "catalog-service" },
   transports: [
     new winston.transports.File({
       dirname: "logs",
