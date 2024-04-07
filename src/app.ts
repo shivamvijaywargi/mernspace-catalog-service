@@ -4,9 +4,11 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
 import morgan from "morgan";
+import swaggerUi from "swagger-ui-express";
 
 import categoryRouter from "./category/category.route";
 import { errorHandler } from "./common/middlewares/errorHandler.middleware";
+import swaggerDocument from "./config/swagger-output.json";
 
 const app = express();
 
@@ -28,6 +30,7 @@ app.get("/health-check", (req, res) => {
 });
 
 app.use("/api/v1/categories", categoryRouter);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // CatchAll - 404
 app.all("*", (req, res) => {
