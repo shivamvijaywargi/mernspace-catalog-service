@@ -46,4 +46,11 @@ categoryRouter.patch(
   asyncWrapper(categoryController.update),
 );
 
+categoryRouter.delete(
+  "/:id",
+  authMiddleware,
+  canAccess([Roles.ADMIN]),
+  asyncWrapper(categoryController.delete),
+);
+
 export default categoryRouter;

@@ -16,6 +16,7 @@ export class CategoryController {
     this.getAll = this.getAll.bind(this);
     this.getById = this.getById.bind(this);
     this.update = this.update.bind(this);
+    this.delete = this.delete.bind(this);
   }
 
   async getAll(req: Request, res: Response) {
@@ -70,5 +71,13 @@ export class CategoryController {
       success: true,
       data: category,
     });
+  }
+
+  async delete(req: Request, res: Response) {
+    const { id } = req.params;
+
+    await this.categoryService.delete(id);
+
+    res.status(204).send();
   }
 }

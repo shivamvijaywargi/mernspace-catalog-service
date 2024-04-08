@@ -90,4 +90,16 @@ export class CategoryService {
 
     return updatedCategory;
   }
+
+  async delete(id: string) {
+    if (!isValidObjectId(id)) {
+      throw createHttpError(400, "Invalid category id");
+    }
+
+    const deletedCategory = await Category.findByIdAndDelete(id);
+
+    if (!deletedCategory) {
+      throw createHttpError(404, "Category not found");
+    }
+  }
 }
