@@ -2,7 +2,10 @@ import { Request, Response } from "express";
 import { Logger } from "winston";
 
 import { CategoryService } from "./category.service";
-import { CreateCategoryRequest } from "./category.validator";
+import {
+  CreateCategoryRequest,
+  UpdateCategoryRequest,
+} from "./category.validator";
 
 export class CategoryController {
   constructor(
@@ -12,6 +15,7 @@ export class CategoryController {
     this.create = this.create.bind(this);
     this.getAll = this.getAll.bind(this);
     this.getById = this.getById.bind(this);
+    this.update = this.update.bind(this);
   }
 
   async getAll(req: Request, res: Response) {
@@ -49,6 +53,20 @@ export class CategoryController {
     });
 
     res.status(201).json({
+      success: true,
+      data: category,
+    });
+  }
+
+  async update(req: Request, res: Response) {
+    const { id } = req.params;
+
+    const category = await this.categoryService.update(
+      id,
+      req.body as UpdateCategoryRequest,
+    );
+
+    res.status(200).json({
       success: true,
       data: category,
     });

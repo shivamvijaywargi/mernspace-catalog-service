@@ -75,9 +75,14 @@ const categoryQuerySchema = z.object({
 
 export type CreateCategoryRequest = z.infer<typeof categoryBodySchema>;
 export type GetCategoryRequest = z.infer<typeof categoryQuerySchema>;
+export type UpdateCategoryRequest = z.infer<typeof updateCategorySchema>;
 
 export const createCategorySchema = z.object({
   body: categoryBodySchema,
+});
+
+export const updateCategorySchema = z.object({
+  body: categoryBodySchema.deepPartial(),
 });
 
 export const getCategorySchema = z.object({

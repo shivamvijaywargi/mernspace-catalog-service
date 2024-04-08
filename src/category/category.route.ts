@@ -8,7 +8,11 @@ import asyncWrapper from "../common/utils/asyncWrapper";
 import { logger } from "../config/logger";
 import { CategoryController } from "./category.controller";
 import { CategoryService } from "./category.service";
-import { createCategorySchema, getCategorySchema } from "./category.validator";
+import {
+  createCategorySchema,
+  getCategorySchema,
+  updateCategorySchema,
+} from "./category.validator";
 
 const categoryRouter = express.Router();
 
@@ -32,6 +36,14 @@ categoryRouter.post(
   canAccess([Roles.ADMIN]),
   validateRequest(createCategorySchema),
   asyncWrapper(categoryController.create),
+);
+
+categoryRouter.patch(
+  "/:id",
+  authMiddleware,
+  canAccess([Roles.ADMIN]),
+  validateRequest(updateCategorySchema),
+  asyncWrapper(categoryController.update),
 );
 
 export default categoryRouter;

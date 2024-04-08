@@ -5,6 +5,7 @@ import Category from "./category.model";
 import {
   CreateCategoryRequest,
   GetCategoryRequest,
+  UpdateCategoryRequest,
 } from "./category.validator";
 
 export class CategoryService {
@@ -72,5 +73,21 @@ export class CategoryService {
     }
 
     return { queryObj, sortObj };
+  }
+
+  async update(id: string, category: UpdateCategoryRequest) {
+    if (!isValidObjectId(id)) {
+      throw createHttpError(400, "Invalid category id");
+    }
+
+    const updatedCategory = await Category.findByIdAndUpdate(
+      id,
+      { $set: category },
+      {
+        new: true,
+      },
+    );
+
+    return updatedCategory;
   }
 }
