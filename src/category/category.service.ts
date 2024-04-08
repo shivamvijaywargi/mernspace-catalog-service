@@ -1,4 +1,5 @@
 import createHttpError from "http-errors";
+import { isValidObjectId } from "mongoose";
 
 import Category from "./category.model";
 import {
@@ -22,6 +23,20 @@ export class CategoryService {
     const totalPages = Math.ceil(totalCount / limit);
 
     return { totalCount, totalPages, currentPage: +page, categories };
+  }
+
+  async getById(id: string) {
+    if (!isValidObjectId(id)) {
+      throw createHttpError(400, "Invalid category id");
+    }
+
+    const category = await Category.findById(id);
+
+    if (!category) {
+      throw createHttpError(404, "Category not found");
+    }
+
+    return category;
   }
 
   async create(category: CreateCategoryRequest) {

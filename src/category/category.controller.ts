@@ -11,14 +11,26 @@ export class CategoryController {
   ) {
     this.create = this.create.bind(this);
     this.getAll = this.getAll.bind(this);
+    this.getById = this.getById.bind(this);
   }
 
   async getAll(req: Request, res: Response) {
     const categories = await this.categoryService.getAll(req.query);
 
-    res.json({
+    res.status(200).json({
       success: true,
       data: categories,
+    });
+  }
+
+  async getById(req: Request, res: Response) {
+    const { id } = req.params;
+
+    const category = await this.categoryService.getById(id);
+
+    res.status(200).json({
+      success: true,
+      data: category,
     });
   }
 
@@ -36,7 +48,7 @@ export class CategoryController {
       id: category._id,
     });
 
-    res.json({
+    res.status(201).json({
       success: true,
       data: category,
     });

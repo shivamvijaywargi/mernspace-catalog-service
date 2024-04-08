@@ -24,6 +24,8 @@ categoryRouter.get(
   asyncWrapper(categoryController.getAll),
 );
 
+categoryRouter.get("/:id", asyncWrapper(categoryController.getById));
+
 categoryRouter.post(
   "/",
   authMiddleware,
