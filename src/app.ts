@@ -7,6 +7,7 @@ import morgan from "morgan";
 
 import categoryRouter from "./category/category.route";
 import { errorHandler } from "./common/middlewares/errorHandler.middleware";
+import productRouter from "./product/product.route";
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.get("/health-check", (req, res) => {
 });
 
 app.use("/api/v1/categories", categoryRouter);
+app.use("/api/v1/products", productRouter);
 
 // CatchAll - 404
 app.all("*", (req, res) => {
