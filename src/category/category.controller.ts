@@ -24,6 +24,7 @@ export class CategoryController {
 
     res.status(200).json({
       success: true,
+      message: "Categories fetched successfully",
       data: categories,
     });
   }
@@ -35,6 +36,7 @@ export class CategoryController {
 
     res.status(200).json({
       success: true,
+      message: "Category fetched successfully",
       data: category,
     });
   }
@@ -55,6 +57,7 @@ export class CategoryController {
 
     res.status(201).json({
       success: true,
+      message: "Category created successfully",
       data: category,
     });
   }
@@ -69,6 +72,7 @@ export class CategoryController {
 
     res.status(200).json({
       success: true,
+      message: "Category updated successfully",
       data: category,
     });
   }
@@ -78,6 +82,9 @@ export class CategoryController {
 
     await this.categoryService.delete(id);
 
-    res.status(204).send();
+    res.status(200).json({
+      success: true,
+      message: "Category deleted successfully",
+    });
   }
 }
