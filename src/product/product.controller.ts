@@ -1,14 +1,30 @@
+import { randomUUID } from "node:crypto";
+
 import { Response } from "express";
+import { UploadedFile } from "express-fileupload";
 import { Request } from "express-jwt";
 
+import { IFileStorage } from "../common/types/storage";
 import { ProductService } from "./product.service";
 import { CreateProductRequest } from "./product.validator";
 
 export class ProductController {
-  // eslint-disable-next-line no-empty-function
-  constructor(private productService: ProductService) {}
+  constructor(
+    private productService: ProductService,
+    private storage: IFileStorage,
+    // eslint-disable-next-line no-empty-function
+  ) {}
 
   create = async (req: Request, res: Response) => {
+    const rawImage = req.files?.image as UploadedFile;
+
+    const imageName = randomUUID();
+
+    await this.storage.uploadFile({
+      filename: imageName,
+      fileData: rawImage.data.buffer,
+    });
+
     const {
       name,
       description,
@@ -17,7 +33,6 @@ export class ProductController {
       priceConfiguration,
       tenantId,
       isPublished,
-      image = "image.jpeg", // FIXME
     } = req.body as CreateProductRequest;
 
     const newProduct = await this.productService.create({
@@ -25,7 +40,7 @@ export class ProductController {
       description,
       attributes,
       categoryId,
-      image,
+      image: imageName,
       priceConfiguration,
       tenantId,
       isPublished,

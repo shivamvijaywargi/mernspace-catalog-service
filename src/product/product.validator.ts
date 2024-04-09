@@ -63,10 +63,7 @@ const productBodySchema = z.object({
       message: "Course ID must be a valid MongoDB ObjectId",
     })
     .trim(),
-  image: z.string({
-    required_error: "Image is required",
-    invalid_type_error: "Image must be a string",
-  }),
+  image: z.union([z.string(), z.instanceof(File)]).optional(),
   isPublished: z.boolean({ coerce: true }).optional(),
 });
 
