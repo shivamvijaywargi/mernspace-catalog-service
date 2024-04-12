@@ -80,7 +80,7 @@ export class ProductController {
     let imageName: string | undefined;
 
     if (req.files?.image) {
-      const oldImage = await this.productService.getProductImage(productId);
+      const oldImage = product.image;
 
       const image = req.files.image as UploadedFile;
       imageName = randomUUID();
