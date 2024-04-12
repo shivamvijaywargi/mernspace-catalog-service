@@ -9,12 +9,6 @@ export class ProductService {
     return await Product.create(product);
   }
 
-  async getProductImage(productId: string) {
-    const product = await Product.findById(productId);
-
-    return product?.image;
-  }
-
   async update(productId: string, productPayload: UpdateProductRequest) {
     const product = await Product.findByIdAndUpdate(
       productId,
