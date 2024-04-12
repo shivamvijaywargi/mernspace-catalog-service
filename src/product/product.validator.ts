@@ -67,6 +67,28 @@ const productBodySchema = z.object({
   isPublished: z.boolean({ coerce: true }).optional(),
 });
 
+const productQuerySchema = z.object({
+  search: z.string().optional(),
+  fromDate: z.number({ coerce: true }).optional(),
+  toDate: z.number({ coerce: true }).optional(),
+  sortBy: z
+    .enum(["createdAt", "updatedAt"]) // Add fields to sort by
+    .optional(),
+  order: z.enum(["asc", "desc"]).optional(),
+  page: z.number({ coerce: true }).min(1).optional(),
+  limit: z.number({ coerce: true }).min(1).optional(),
+  isPublished: z.boolean({ coerce: true }).optional(),
+  categoryId: z
+    .string()
+    .regex(/^(?=[a-f\d]{24}$)(\d+[a-f]|[a-f]+\d)/i, {
+      message: "Category ID must be a valid MongoDB ObjectId",
+    })
+    .trim()
+    .optional(),
+  tenantId: z.string().optional(),
+});
+
+export type GetProductRequest = z.infer<typeof productQuerySchema>;
 export type CreateProductRequest = z.infer<typeof productBodySchema>;
 
 export const createProductSchema = z.object({
@@ -75,6 +97,10 @@ export const createProductSchema = z.object({
 
 export const updateProductSchema = z.object({
   body: productBodySchema.deepPartial(),
+});
+
+export const getProductSchema = z.object({
+  query: productQuerySchema,
 });
 
 export type UpdateProductRequest = z.infer<typeof updateProductSchema>["body"];

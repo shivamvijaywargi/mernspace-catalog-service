@@ -2,6 +2,7 @@ import express from "express";
 import fileUpload from "express-fileupload";
 import createHttpError from "http-errors";
 
+import { getCategorySchema } from "../category/category.validator";
 import { Roles } from "../common/constants";
 import authMiddleware from "../common/middlewares/auth.middleware";
 import { canAccess } from "../common/middlewares/canAccess.middleware";
@@ -22,11 +23,11 @@ const productController = new ProductController(productService, storage);
 /**
  * @Prefix /api/v1/products
  */
-// productRouter.get(
-//   "/",
-//   validateRequest(getCategorySchema),
-//   asyncWrapper(categoryController.getAll),
-// );
+productRouter.get(
+  "/",
+  validateRequest(getCategorySchema),
+  asyncWrapper(productController.getAll),
+);
 
 // productRouter.get("/:id", asyncWrapper(categoryController.getById));
 

@@ -20,6 +20,16 @@ export class ProductController {
     // eslint-disable-next-line no-empty-function
   ) {}
 
+  getAll = async (req: Request, res: Response) => {
+    const products = await this.productService.getAll(req.query);
+
+    res.status(200).json({
+      success: true,
+      message: "Products fetched successfully",
+      data: products,
+    });
+  };
+
   create = async (req: Request, res: Response) => {
     const rawImage = req.files?.image as UploadedFile;
 
