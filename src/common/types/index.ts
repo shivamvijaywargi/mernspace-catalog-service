@@ -8,5 +8,6 @@ export interface IAuthRequest extends Request {
     sub: string;
     role: string;
     id?: string;
+    tenant: string;
   };
 }

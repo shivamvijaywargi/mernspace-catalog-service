@@ -1,9 +1,11 @@
 import { randomUUID } from "node:crypto";
 
-import { Response } from "express";
+import { NextFunction, Response } from "express";
 import { UploadedFile } from "express-fileupload";
 import { Request } from "express-jwt";
+import createHttpError from "http-errors";
 
+import { IAuthRequest } from "../common/types";
 import { IFileStorage } from "../common/types/storage";
 import { ProductService } from "./product.service";
 import {
@@ -56,8 +58,22 @@ export class ProductController {
     });
   };
 
-  update = async (req: Request, res: Response) => {
+  update = async (req: Request, res: Response, next: NextFunction) => {
     const { productId } = req.params;
+
+    const product = await this.productService.getProduct(productId);
+
+    if (!product) {
+      return next(createHttpError(404, "Product not found"));
+    }
+
+    const tenant = (req as IAuthRequest).auth.tenant;
+
+    if (product.tenantId !== String(tenant)) {
+      return next(
+        createHttpError(403, "You are not allowed to update this product"),
+      );
+    }
 
     let imageName: string | undefined;
 

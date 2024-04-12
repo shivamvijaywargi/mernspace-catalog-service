@@ -28,4 +28,8 @@ export class ProductService {
 
     return product;
   }
+
+  async getProduct(productId: string) {
+    return await Product.findById({ _id: productId });
+  }
 }
