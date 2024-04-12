@@ -23,10 +23,22 @@ export class ProductController {
   getAll = async (req: Request, res: Response) => {
     const products = await this.productService.getAll(req.query);
 
+    const finalProducts: CreateProductRequest[] = products.products.map(
+      (product: CreateProductRequest) => ({
+        ...product,
+        image: this.storage.getFileUri(product.image as string),
+      }),
+    );
+
     res.status(200).json({
       success: true,
       message: "Products fetched successfully",
-      data: products,
+      data: {
+        products: finalProducts,
+        totalProducts: products.totalCount,
+        totalPages: products.totalPages,
+        currentPage: products.currentPage,
+      },
     });
   };
 

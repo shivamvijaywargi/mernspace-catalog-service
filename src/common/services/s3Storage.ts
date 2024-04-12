@@ -3,6 +3,7 @@ import {
   PutObjectCommand,
   S3Client,
 } from "@aws-sdk/client-s3";
+import createHttpError from "http-errors";
 
 import { CONFIG } from "../../config";
 import { IFile, IFileStorage } from "../types/storage";
@@ -39,7 +40,13 @@ export class S3Storage implements IFileStorage {
     await this.client.send(new DeleteObjectCommand(objectParams));
   }
 
-  getFileUri(_filename: string): string {
-    throw new Error("Method not implemented.");
+  getFileUri(filename: string): string {
+    const { s3Bucket, s3Region } = CONFIG;
+
+    if (s3Bucket && s3Region) {
+      return `https://${s3Bucket}.s3.${s3Region}.amazonaws.com/${filename}`;
+    }
+
+    throw createHttpError(500, "Invalid S3 configuration");
   }
 }
