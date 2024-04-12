@@ -2,7 +2,6 @@ import express from "express";
 import fileUpload from "express-fileupload";
 import createHttpError from "http-errors";
 
-import { getCategorySchema } from "../category/category.validator";
 import { Roles } from "../common/constants";
 import authMiddleware from "../common/middlewares/auth.middleware";
 import { canAccess } from "../common/middlewares/canAccess.middleware";
@@ -11,7 +10,11 @@ import { S3Storage } from "../common/services/s3Storage";
 import asyncWrapper from "../common/utils/asyncWrapper";
 import { ProductController } from "./product.controller";
 import { ProductService } from "./product.service";
-import { createProductSchema, updateProductSchema } from "./product.validator";
+import {
+  createProductSchema,
+  getProductSchema,
+  updateProductSchema,
+} from "./product.validator";
 
 const productRouter = express.Router();
 
@@ -25,11 +28,11 @@ const productController = new ProductController(productService, storage);
  */
 productRouter.get(
   "/",
-  validateRequest(getCategorySchema),
+  validateRequest(getProductSchema),
   asyncWrapper(productController.getAll),
 );
 
-// productRouter.get("/:id", asyncWrapper(categoryController.getById));
+productRouter.get("/:productId", asyncWrapper(productController.getById));
 
 productRouter.post(
   "/",

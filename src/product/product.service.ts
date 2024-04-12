@@ -70,7 +70,13 @@ export class ProductService {
   }
 
   async getProduct(productId: string) {
-    return await Product.findById({ _id: productId });
+    if (!mongoose.isValidObjectId(productId)) {
+      throw createHttpError(400, "Invalid product ID");
+    }
+
+    const product = await Product.findById({ _id: productId });
+
+    return product?.toObject();
   }
 
   filterObject(object: GetProductRequest) {

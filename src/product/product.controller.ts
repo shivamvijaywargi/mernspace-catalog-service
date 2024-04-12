@@ -42,6 +42,27 @@ export class ProductController {
     });
   };
 
+  getById = async (req: Request, res: Response, next: NextFunction) => {
+    const { productId } = req.params;
+
+    const product = await this.productService.getProduct(productId);
+
+    if (!product) {
+      return next(createHttpError(404, "Product not found"));
+    }
+
+    const finalProduct = {
+      ...product,
+      image: this.storage.getFileUri(product.image),
+    };
+
+    res.status(200).json({
+      success: true,
+      message: "Product fetched successfully",
+      data: finalProduct,
+    });
+  };
+
   create = async (req: Request, res: Response) => {
     const rawImage = req.files?.image as UploadedFile;
 
