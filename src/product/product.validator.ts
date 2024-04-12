@@ -72,3 +72,9 @@ export type CreateProductRequest = z.infer<typeof productBodySchema>;
 export const createProductSchema = z.object({
   body: productBodySchema,
 });
+
+export const updateProductSchema = z.object({
+  body: productBodySchema.deepPartial(),
+});
+
+export type UpdateProductRequest = z.infer<typeof updateProductSchema>["body"];

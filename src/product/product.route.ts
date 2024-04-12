@@ -10,7 +10,7 @@ import { S3Storage } from "../common/services/s3Storage";
 import asyncWrapper from "../common/utils/asyncWrapper";
 import { ProductController } from "./product.controller";
 import { ProductService } from "./product.service";
-import { createProductSchema } from "./product.validator";
+import { createProductSchema, updateProductSchema } from "./product.validator";
 
 const productRouter = express.Router();
 
@@ -50,6 +50,25 @@ productRouter.post(
   asyncWrapper(productController.create),
 );
 
+productRouter.patch(
+  "/:productId",
+  authMiddleware,
+  canAccess([Roles.ADMIN, Roles.MANAGER]),
+  fileUpload({
+    limits: { fileSize: 500 * 1024 },
+    abortOnLimit: true,
+    limitHandler: (_req, res, _next) => {
+      const error = createHttpError(
+        413,
+        "File size exceeds the limit of 500KB",
+      );
+
+      res.status(413).json({ success: false, error });
+    },
+  }),
+  validateRequest(updateProductSchema),
+  asyncWrapper(productController.update),
+);
 // productRouter.patch(
 //   "/:id",
 //   authMiddleware,

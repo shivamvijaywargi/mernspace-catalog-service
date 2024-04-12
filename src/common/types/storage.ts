@@ -5,6 +5,6 @@ export interface IFile {
 
 export interface IFileStorage {
   uploadFile(file: IFile): Promise<void>;
-  deleteFile(filename: string): void;
+  deleteFile(filename: string): Promise<void>;
   getFileUri(filename: string): string;
 }
