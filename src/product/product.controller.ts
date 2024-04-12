@@ -67,12 +67,14 @@ export class ProductController {
       return next(createHttpError(404, "Product not found"));
     }
 
-    const tenant = (req as IAuthRequest).auth.tenant;
+    if ((req as IAuthRequest).auth.role !== "admin") {
+      const tenant = (req as IAuthRequest).auth.tenant;
 
-    if (product.tenantId !== String(tenant)) {
-      return next(
-        createHttpError(403, "You are not allowed to update this product"),
-      );
+      if (product.tenantId !== String(tenant)) {
+        return next(
+          createHttpError(403, "You are not allowed to update this product"),
+        );
+      }
     }
 
     let imageName: string | undefined;
